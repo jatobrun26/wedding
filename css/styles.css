@@ -44,16 +44,20 @@ button{font-family:inherit; cursor:pointer;}
 
 /* Cover hint */
 .hint{
-  position:absolute; left:0; right:0; bottom:3%;
+  position:absolute; left:50%; transform:translateX(-50%);
+  bottom:calc(6% + env(safe-area-inset-bottom));
+  z-index:10; white-space:nowrap;
   display:flex; flex-direction:row; align-items:center; justify-content:center; gap:.5em;
-  color:var(--gold); font-family:var(--sans); font-weight:300;
-  font-size:clamp(11px,3.2vw,15px); letter-spacing:.12em; text-transform:uppercase;
-  opacity:.9;
+  color:var(--gold); font-family:var(--sans); font-weight:400;
+  font-size:clamp(10px,3vw,13px); letter-spacing:.08em; text-transform:uppercase;
+  background:rgba(255,255,255,.62); backdrop-filter:blur(3px);
+  padding:.55em 1.1em; border-radius:999px; box-shadow:0 4px 14px rgba(40,34,20,.1);
+  max-width:90vw;
 }
-.hint-chev{ font-size:1.7em; line-height:1; animation:swipeX 1.5s ease-in-out infinite; }
+.hint-chev{ font-size:1.6em; line-height:1; animation:swipeX 1.5s ease-in-out infinite; }
 @keyframes swipeX{
   0%,100%{ transform:translateX(0); opacity:.55; }
-  50%{ transform:translateX(8px); opacity:1; }
+  50%{ transform:translateX(6px); opacity:1; }
 }
 
 /* ===================== Action bar (on image slides) ===================== */
