@@ -6,3 +6,7 @@ _work/
 
 # OS
 .DS_Store
+
+# Local dev server
+serve.py
+_t.html
