@@ -132,13 +132,17 @@
 
   /* ---------- Map + Add to Calendar (slide 3) ---------- */
   $("#btn-map").addEventListener("click", function () {
-    var q = encodeURIComponent(cfg.mapQuery || cfg.venueCity || "");
+    var q = (cfg.mapLat && cfg.mapLng)
+      ? encodeURIComponent(cfg.mapLat + "," + cfg.mapLng)
+      : encodeURIComponent(cfg.mapQuery || cfg.venueCity || "");
     window.open("https://www.google.com/maps/search/?api=1&query=" + q, "_blank", "noopener");
   });
 
   $("#btn-cal").addEventListener("click", function () {
-    var start = new Date(cfg.dateISO);
-    var end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    var start = new Date(cfg.calStartISO || cfg.dateISO);
+    var end = cfg.calEndISO
+      ? new Date(cfg.calEndISO)
+      : new Date(start.getTime() + 2 * 60 * 60 * 1000);
     function z(d) { return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
     var ics = [
       "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//JG//Invitacion//ES",

@@ -56,9 +56,9 @@ button{font-family:inherit; cursor:pointer;}
 /* ===================== Action bar (on image slides) ===================== */
 .actionbar{
   position:absolute; left:0; right:0; bottom:0;
-  padding:14% 7% 5%;
+  padding:16% 7% 11%;
   display:flex; flex-direction:column; align-items:center; gap:3.5%;
-  background:linear-gradient(to top, var(--cream) 28%, rgba(244,241,233,.85) 55%, rgba(244,241,233,0) 100%);
+  background:linear-gradient(to top, var(--cream) 38%, rgba(244,241,233,.85) 62%, rgba(244,241,233,0) 100%);
 }
 .countdown{ display:flex; gap:2.5%; justify-content:center; width:100%; }
 .cd-cell{
