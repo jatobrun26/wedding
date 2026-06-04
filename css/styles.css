@@ -56,15 +56,20 @@ button{font-family:inherit; cursor:pointer;}
 /* ===================== Action bar (on image slides) ===================== */
 .actionbar{
   position:absolute; left:0; right:0; bottom:0;
-  padding:16% 7% 11%;
-  display:flex; flex-direction:column; align-items:center; gap:3.5%;
-  background:linear-gradient(to top, var(--cream) 38%, rgba(244,241,233,.85) 62%, rgba(244,241,233,0) 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  gap:16px; padding:13% 6% 8%;
+  background:linear-gradient(to top, var(--cream) 60%, rgba(244,241,233,0) 100%);
 }
-.countdown{ display:flex; gap:2.5%; justify-content:center; width:100%; }
+/* Slide 3: taller solid bar to hide the heart printed on the page image */
+.actionbar.cover{
+  min-height:35%;
+  background:linear-gradient(to top, var(--cream) 82%, rgba(244,241,233,0) 100%);
+}
+.countdown{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; width:100%; }
 .cd-cell{
-  flex:1; max-width:74px; text-align:center;
+  text-align:center;
   background:#fff; border:1px solid rgba(177,146,79,.35); border-radius:12px;
-  padding:.5em .2em; box-shadow:0 6px 16px rgba(40,34,20,.06);
+  padding:.6em .2em; box-shadow:0 6px 16px rgba(40,34,20,.06);
 }
 .cd-cell b{ display:block; font-family:var(--serif); font-weight:600; color:var(--ink);
   font-size:clamp(18px,6vw,28px); line-height:1; }
