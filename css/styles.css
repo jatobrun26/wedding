@@ -132,6 +132,36 @@ button{font-family:inherit; cursor:pointer;}
 .grid img:active{ transform:scale(.96); }
 .leaf-sep{ color:var(--gold-soft); font-size:22px; margin:6px 0; }
 
+/* ===================== Confirm / RSVP slide (HTML) ===================== */
+.confirm{ position:relative; justify-content:center; padding:7vh 9vw; }
+.confirm > *{ margin:0; }
+.c-num{
+  position:absolute; top:5%; left:12%;
+  font-family:var(--serif); font-weight:600; color:var(--ink); font-size:20px;
+}
+.c-num::after{ content:""; display:block; width:26px; height:2px; background:var(--gold); margin-top:4px; }
+.c-ico{ color:var(--gold); display:block; margin-bottom:6%; }
+.c-ico svg{ width:38px; height:38px; }
+.confirm .script{ font-family:var(--script); font-weight:400; line-height:1; }
+.confirm .gold{ color:var(--gold); }
+.con-carino{ font-size:clamp(28px,9vw,42px); }
+.names{
+  font-family:var(--serif); font-weight:600; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--ink); font-size:clamp(24px,7.5vw,38px);
+  margin-top:.1em;
+}
+.heart-rule{ display:flex; align-items:center; justify-content:center; gap:14px; margin:6% 0; }
+.heart-rule span{ width:36px; height:1px; background:var(--gold-soft); }
+.heart-rule .hrt{ width:20px; height:20px; color:var(--gold); }
+.thanks{ color:var(--muted); font-size:clamp(14px,4vw,17px); line-height:1.55; max-width:22em; }
+.confirm-title{
+  font-family:var(--serif); text-transform:uppercase; letter-spacing:.2em; font-weight:600;
+  color:var(--ink); font-size:clamp(20px,6vw,26px); margin-top:9%;
+}
+.confirm-sub{ font-size:clamp(26px,8vw,38px); margin-top:.05em; }
+.deadline{ color:var(--muted); font-size:clamp(13px,3.6vw,15px); margin-top:.4em; }
+.confirm .btn-primary{ margin-top:8%; }
+
 /* ===================== Video slide ===================== */
 .vpanel{ position:relative; cursor:pointer; }
 .vposter{ position:absolute; inset:0; object-fit:cover; width:100%; height:100%; filter:brightness(.8); }
