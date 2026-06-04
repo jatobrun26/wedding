@@ -1,0 +1,8 @@
+# Source assets — NOT deployed (too large for GitHub Pages / not needed live)
+video/
+fotos/
+*.pdf
+_work/
+
+# OS
+.DS_Store
