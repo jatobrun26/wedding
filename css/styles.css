@@ -44,14 +44,17 @@ button{font-family:inherit; cursor:pointer;}
 
 /* Cover hint */
 .hint{
-  position:absolute; left:0; right:0; bottom:2.4%;
-  display:flex; flex-direction:column; align-items:center; gap:.1em;
+  position:absolute; left:0; right:0; bottom:3%;
+  display:flex; flex-direction:row; align-items:center; justify-content:center; gap:.5em;
   color:var(--gold); font-family:var(--sans); font-weight:300;
   font-size:clamp(11px,3.2vw,15px); letter-spacing:.12em; text-transform:uppercase;
-  opacity:.85; animation:floaty 2.4s ease-in-out infinite;
+  opacity:.9;
 }
-.hint-chev{ font-size:1.6em; line-height:.6; }
-@keyframes floaty{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+.hint-chev{ font-size:1.7em; line-height:1; animation:swipeX 1.5s ease-in-out infinite; }
+@keyframes swipeX{
+  0%,100%{ transform:translateX(0); opacity:.55; }
+  50%{ transform:translateX(8px); opacity:1; }
+}
 
 /* ===================== Action bar (on image slides) ===================== */
 .actionbar{
@@ -278,6 +281,6 @@ button{font-family:inherit; cursor:pointer;}
 
 /* ===================== Reduced motion ===================== */
 @media (prefers-reduced-motion: reduce){
-  .hint, .music-btn.playing .music-ico, .success-heart{ animation:none; }
+  .hint-chev, .music-btn.playing .music-ico, .success-heart{ animation:none; }
   .intro.opening .env-flap{ transition:none; }
 }
