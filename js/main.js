@@ -30,6 +30,16 @@
   var msgText = $("#msg-text");
   if (msgText && cfg.welcomeText) msgText.textContent = cfg.welcomeText;
 
+  /* ---------- Detalles ---------- */
+  var addrBox = $("#detail-address");
+  if (addrBox && cfg.addressLines) {
+    addrBox.innerHTML = cfg.addressLines.map(function (l) {
+      return "<div>" + l + "</div>";
+    }).join("");
+  }
+  var mapBtn = $("#btn-map");
+  if (mapBtn && cfg.mapsButtonText) mapBtn.textContent = cfg.mapsButtonText;
+
   /* ---------- Construye slides dinámicos (galería / video) ---------- */
   var wrapper = $("#wrapper");
   var galleryList = (cfg.gallery || []).map(function (g) {
