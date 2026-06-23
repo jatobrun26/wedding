@@ -67,6 +67,15 @@
   var storyText = $("#story-text");
   if (storyText && cfg.story) storyText.textContent = cfg.story;
 
+  /* ---------- Regalos ---------- */
+  var giftText = $("#gift-text");
+  if (giftText && cfg.giftText) giftText.textContent = cfg.giftText;
+  var giftBtn = $("#btn-gifts");
+  if (giftBtn && cfg.giftListUrl) {
+    giftBtn.href = cfg.giftListUrl;
+    giftBtn.hidden = false;
+  }
+
   /* ---------- Construye slides dinámicos (galería / video) ---------- */
   var wrapper = $("#wrapper");
   var galleryList = (cfg.gallery || []).map(function (g) {
