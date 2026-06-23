@@ -369,3 +369,14 @@ button{font-family:inherit; cursor:pointer;}
 .swatches{ display:flex; gap:0; margin:26px 0 8px; border-radius:6px; overflow:hidden; box-shadow:var(--shadow); }
 .swatches span{ width:30px; height:30px; display:block; }
 .dress-note{ font-family:var(--sans); font-size:12px; letter-spacing:.04em; color:var(--on-sage); opacity:.8; margin:4px 0 0; }
+
+/* ===================== Countdown (slide) ===================== */
+.cd-panel .sub{ font-size:clamp(26px,8vw,38px); margin:2px 0 30px; }
+.countdown.big{ display:flex; align-items:flex-start; justify-content:center; gap:6px; }
+.countdown.big .cd-cell{ display:flex; flex-direction:column; align-items:center; min-width:54px; }
+.countdown.big .cd-cell b{ font-family:var(--serif); font-weight:500; color:var(--green-ink);
+  font-size:clamp(36px,12vw,56px); line-height:1; }
+.countdown.big .cd-cell span{ font-family:var(--sans); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); margin-top:6px; }
+.countdown.big .cd-sep{ font-family:var(--serif); color:var(--gold-soft);
+  font-size:clamp(30px,10vw,46px); line-height:1; padding-top:2px; }
