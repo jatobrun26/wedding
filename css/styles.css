@@ -404,3 +404,10 @@ button{font-family:inherit; cursor:pointer;}
 .gift-text{ font-family:var(--serif); font-size:clamp(16px,4.6vw,20px); line-height:1.6;
   color:var(--on-sage); max-width:34ch; margin:14px 0 0; }
 .btn-light{ background:var(--on-sage); color:var(--green-ink); text-decoration:none; }
+
+/* ===================== RSVP slide palette normalize ===================== */
+.confirm .names{ color:var(--green-ink); }
+.confirm .con-carino, .confirm .confirm-sub, .confirm .c-ico, .confirm .hrt{ color:var(--gold); }
+.confirm .thanks, .confirm .deadline, .confirm .c-num{ color:var(--muted); }
+.confirm .confirm-title{ color:var(--green-ink); }
+.btn-primary{ background:var(--sage); color:var(--on-sage); border:none; }
