@@ -411,3 +411,11 @@ button{font-family:inherit; cursor:pointer;}
 .confirm .thanks, .confirm .deadline, .confirm .c-num{ color:var(--muted); }
 .confirm .confirm-title{ color:var(--green-ink); }
 .btn-primary{ background:var(--sage); color:var(--on-sage); border:none; }
+
+/* ===================== Galería / Video (re-skin) ===================== */
+.gallery-panel h2{ color:var(--on-sage); margin-bottom:18px; }
+.grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; width:100%; max-width:360px; }
+.grid img{ width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; cursor:pointer; }
+.gallery-panel .btn{ margin-top:18px; background:var(--on-sage); color:var(--green-ink); }
+.vpanel{ background:#000; }
+.vtitle{ font-family:var(--serif); color:var(--green-ink); }

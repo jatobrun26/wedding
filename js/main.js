@@ -87,14 +87,13 @@
       return '<img src="' + g.webp + '" alt="Foto ' + (i + 1) + '" data-i="' + i + '" loading="lazy" />';
     }).join("");
     var gslide = document.createElement("div");
-    gslide.className = "swiper-slide";
+    gslide.className = "swiper-slide slide--sage";
     gslide.innerHTML =
-      '<div class="panel">' +
-        '<span class="eyebrow">Nuestra historia</span>' +
+      '<div class="panel gallery-panel">' +
         '<h2 class="serif-caps">Galería</h2>' +
         '<div class="grid" id="grid">' + thumbs + '</div>' +
         '<button class="btn" id="btn-gallery-all" type="button">Ver todas las fotos</button>' +
-        '<div class="leaf-sep">&#10086;</div>' +
+        '<div class="euca br" aria-hidden="true"></div>' +
       '</div>';
     wrapper.appendChild(gslide);
   }
@@ -102,7 +101,7 @@
   if (cfg.videoUrl) {
     var poster = galleryList.length ? galleryList[Math.min(6, galleryList.length - 1)].webp : "assets/pages/page1.webp";
     var vslide = document.createElement("div");
-    vslide.className = "swiper-slide";
+    vslide.className = "swiper-slide slide--cream";
     vslide.innerHTML =
       '<div class="panel vpanel" id="vpanel">' +
         '<img class="vposter" src="' + poster + '" alt="" />' +
@@ -179,7 +178,7 @@
     if (reduce) return;
     var box = $("#petals");
     var leaf = "data:image/svg+xml;utf8," + encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C7 7 4 11 4 16a8 8 0 0016 0c0-5-3-9-8-14z" fill="none" stroke="%23b1924f" stroke-width="1.2"/></svg>'
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C7 7 4 11 4 16a8 8 0 0016 0c0-5-3-9-8-14z" fill="none" stroke="%23b3925a" stroke-width="1.2"/></svg>'
     );
     for (var n = 0; n < 14; n++) {
       var p = document.createElement("img");
