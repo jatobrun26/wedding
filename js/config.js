@@ -39,5 +39,35 @@ window.WEDDING_CONFIG = {
   gallery: [
     "g01", "g02", "g03", "g04", "g05", "g06", "g07",
     "g08", "g09", "g10", "g11", "g12", "g13", "g14"
-  ]
+  ],
+
+  // ---- Refactor "Sage Botanical" ----
+  displayNames: "Jamil & Gaby",            // portada (resto del sitio: "Jamil & Gabriela")
+
+  // Fotos de las secciones (reemplaza por las reales cuando las tengas)
+  heroImage:    "assets/gallery/g01.jpg",  // TODO: foto del lugar
+  messageImage: "assets/gallery/g05.jpg",  // TODO: foto de la pareja
+  storyImage:   "assets/gallery/g10.jpg",  // TODO: foto "La pedida"
+
+  // Detalles
+  addressLines: ["La Puntilla, Samborondón", "Av. Principal, calle cuarta sur"], // TODO: dirección real
+  mapsButtonText: "Ver mapa",
+
+  // Mensaje de bienvenida
+  welcomeText: "Después de tantos momentos, risas y sueños compartidos, ha llegado el día que siempre imaginamos. Nos llena de felicidad invitarte a celebrar el inicio de nuestra nueva historia.",
+
+  // Itinerario
+  itinerary: [
+    { time: "5:00pm", label: "Ceremonia", icon: "rings" },
+    { time: "6:00pm", label: "¡Fotos!",   icon: "camera" },
+    { time: "8:00pm", label: "Cena",      icon: "dinner" },
+    { time: "9:00pm", label: "¡Fiesta!",  icon: "party" }
+  ],
+
+  // Nuestra historia
+  story: "Hay encuentros que parecen escritos por el destino. El nuestro comenzó como una amistad inesperada y creció entre conversaciones, sueños compartidos y la certeza de que juntos todo es posible. Cinco años después seguimos eligiéndonos cada día y estamos listos para comenzar la aventura más importante de nuestras vidas.",
+
+  // Regalos
+  giftText: "Desde el inicio de nuestra historia hemos compartido sueños, metas y proyectos que nos ilusionan profundamente. Si desean acompañarnos también en esta nueva etapa, hemos preparado una lista con algunos detalles que nos ayudarán a construir nuestro hogar y seguir creando recuerdos juntos.",
+  giftListUrl: ""                          // vacío ⇒ se oculta el botón
 };
