@@ -178,7 +178,7 @@
         <div class="panel gifts">
           <h2 class="serif-caps">Regalos</h2>
           <p class="gift-text" id="gift-text"></p>
-          <a class="btn btn-light" id="btn-gifts" href="#" target="_blank" rel="noopener" hidden>Ver nuestra lista</a>
+          <button class="btn btn-light" id="btn-gifts" type="button" hidden>Ver nuestra lista</button>
           <div class="euca bl" aria-hidden="true"></div>
         </div>
       </div>
@@ -288,6 +288,35 @@
     <div class="video-frame" id="video-frame"></div>
   </div>
 
+  <!-- ===================== GIFTS MODAL ===================== -->
+  <div class="modal" id="gift-modal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="gift-close" type="button" aria-label="Cerrar">×</button>
+
+      <div class="modal-body" id="gift-body">
+        <h2 class="script">Lista de regalos</h2>
+        <p class="muted">Elige uno o más detalles. Lo que reserves desaparecerá para los demás.</p>
+
+        <label>Nombre o familia
+          <input type="text" id="gift-familia" placeholder="Ej: Familia Torres" autocomplete="name" />
+        </label>
+
+        <div class="gift-list" id="gift-list" aria-live="polite">
+          <p class="gift-state" id="gift-state">Cargando lista…</p>
+        </div>
+
+        <button class="btn btn-primary btn-block" type="button" id="gift-submit" disabled>Reservar seleccionados</button>
+      </div>
+
+      <div class="modal-success" id="gift-success" hidden>
+        <div class="success-heart">♥</div>
+        <h3 class="serif-caps">¡Gracias!</h3>
+        <p class="muted" id="gift-success-msg"></p>
+        <button class="btn" id="gift-done" type="button">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
   <audio id="bg-audio" loop preload="none"></audio>
 
   <!-- Scripts -->
@@ -295,6 +324,7 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="js/countdown.js"></script>
   <script src="js/rsvp.js"></script>
+  <script src="js/gifts.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

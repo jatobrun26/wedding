@@ -71,9 +71,9 @@
   var giftText = $("#gift-text");
   if (giftText && cfg.giftText) giftText.textContent = cfg.giftText;
   var giftBtn = $("#btn-gifts");
-  if (giftBtn && cfg.giftListUrl) {
-    giftBtn.href = cfg.giftListUrl;
+  if (giftBtn && cfg.giftEndpoint && window.GIFTS && window.GIFTS.enabled) {
     giftBtn.hidden = false;
+    giftBtn.addEventListener("click", function () { window.GIFTS.open(); });
   }
 
   /* ---------- Construye slides dinámicos (galería / video) ---------- */
@@ -154,6 +154,7 @@
 
   function anyOverlayOpen() {
     return (window.RSVP && window.RSVP.isOpen()) ||
+      (window.GIFTS && window.GIFTS.isOpen()) ||
       $("#lightbox").classList.contains("open") ||
       $("#video-modal").classList.contains("open") ||
       !$("#intro").classList.contains("gone");
@@ -300,6 +301,7 @@
     startPetals();
     paintProgress();
     if (qs.get("rsvp") === "1" && window.RSVP) window.RSVP.open();
+    if (qs.get("gift") === "1" && window.GIFTS) window.GIFTS.open();
   }
 
   /* ---------- Escape closes overlays ---------- */
@@ -307,6 +309,7 @@
     if (e.key === "Escape") {
       if (lb.classList.contains("open")) closeLb();
       else if (vmodal.classList.contains("open")) closeVideo();
+      else if (window.GIFTS && window.GIFTS.isOpen()) window.GIFTS.close();
       else if (window.RSVP && window.RSVP.isOpen()) window.RSVP.close();
     }
     if (e.key === "ArrowLeft" && lb.classList.contains("open")) showLb(lbIdx - 1);
