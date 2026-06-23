@@ -61,6 +61,12 @@
     }).join("");
   }
 
+  /* ---------- Nuestra historia ---------- */
+  var storyImg = $("#story-img");
+  if (storyImg && cfg.storyImage) storyImg.src = cfg.storyImage;
+  var storyText = $("#story-text");
+  if (storyText && cfg.story) storyText.textContent = cfg.story;
+
   /* ---------- Construye slides dinámicos (galería / video) ---------- */
   var wrapper = $("#wrapper");
   var galleryList = (cfg.gallery || []).map(function (g) {
