@@ -24,6 +24,12 @@
     }
   }
 
+  /* ---------- Mensaje ---------- */
+  var msgImg = $("#msg-img");
+  if (msgImg && cfg.messageImage) msgImg.src = cfg.messageImage;
+  var msgText = $("#msg-text");
+  if (msgText && cfg.welcomeText) msgText.textContent = cfg.welcomeText;
+
   /* ---------- Construye slides dinámicos (galería / video) ---------- */
   var wrapper = $("#wrapper");
   var galleryList = (cfg.gallery || []).map(function (g) {
