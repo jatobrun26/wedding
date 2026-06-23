@@ -11,6 +11,19 @@
   if (cfg.names) $(".intro-names").textContent = cfg.names;
   if (cfg.initials) $(".seal-initials").textContent = cfg.initials.left + "&" + cfg.initials.right;
 
+  /* ---------- Portada ---------- */
+  var heroImg = $("#hero-img");
+  if (heroImg && cfg.heroImage) heroImg.src = cfg.heroImage;
+  if (cfg.displayNames) {
+    var hn = $("#hero-names");
+    if (hn) {
+      var parts = cfg.displayNames.split("&");
+      hn.innerHTML = parts.length === 2
+        ? parts[0].trim() + ' <span class="amp">&amp;</span> ' + parts[1].trim()
+        : cfg.displayNames;
+    }
+  }
+
   /* ---------- Construye slides dinámicos (galería / video) ---------- */
   var wrapper = $("#wrapper");
   var galleryList = (cfg.gallery || []).map(function (g) {
