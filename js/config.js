@@ -45,7 +45,7 @@ window.WEDDING_CONFIG = {
   displayNames: "Jamil & Gaby",            // portada (resto del sitio: "Jamil & Gabriela")
 
   // Fotos de las secciones (reemplaza por las reales cuando las tengas)
-  heroImage:    "assets/paint/villa.jpg",   // villa pintada (recorte del Canva)
+  heroImage:    "assets/paint/villa.jpeg",  // villa pintada (acuarela hi-res) — fondo de portada
   messageImage: "assets/paint/couple.jpg",  // pareja en acuarela suave
   storyImage:   "assets/gallery/g10.jpg",  // TODO: foto "La pedida"
 
