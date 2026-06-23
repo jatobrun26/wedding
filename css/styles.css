@@ -29,6 +29,7 @@ body{
 }
 img{user-select:none; -webkit-user-drag:none;}
 button{font-family:inherit; cursor:pointer;}
+[hidden]{display:none !important;}   /* el atributo hidden gana a display de clases (p. ej. .btn-light) */
 
 /* ===================== Deck / Slides ===================== */
 .deck{ width:100%; height:100svh; }
