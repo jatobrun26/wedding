@@ -33,15 +33,18 @@ README_DEPLOY.md        # guía de publicación
 serve.py                # servidor local con headers no-cache (NO se despliega, está en .gitignore)
 ```
 
-### Slides (orden actual)
-1. Portada (page1) + hint "Desliza para continuar ›"
-2. Mensaje (page2)
-3. Detalles (page3) + barra de acciones: countdown, "Cómo llegar", "Agendar"
-4. Dress code (page4)
-5. **RSVP — HTML en vivo** (orden "nombres primero"): ✉ · Con cariño · JAMIL & GABRIELA ·
-   ♥ · agradecimiento · Confirma tu asistencia · botón. (Sin QR ni hoja.)
-6. Galería (grid de 6 + lightbox con las 14)
-7. Video (solo aparece si `videoUrl` está configurado)
+### Slides (orden actual — 11 slides, todos HTML excepto assets)
+1. Portada + hint "Desliza para continuar ›"
+2. Mensaje
+3. Celebra con nosotros (Ceremonia civil & Recepción)
+4. Dress code
+5. Countdown (cuenta regresiva en vivo)
+6. Itinerario (anillo, cóctel, cena, fiesta con horarios)
+7. Nuestra historia (foto + texto personal)
+8. Regalos (texto + link opcional a lista)
+9. RSVP (HTML en vivo: orden "nombres primero", sin QR ni hoja)
+10. Galería (grid de 6 + lightbox con las 14)
+11. Video (solo aparece si `videoUrl` está configurado)
 
 ## Editar los datos
 Todo en **`js/config.js`**. Campos importantes:

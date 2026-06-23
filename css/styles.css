@@ -388,8 +388,8 @@ button{font-family:inherit; cursor:pointer;}
 .itin-item{ display:flex; align-items:center; gap:16px; text-align:left; }
 .itin-ico{ flex:0 0 auto; width:42px; height:42px; display:grid; place-items:center; }
 .itin-ico svg{ width:34px; height:34px; color:var(--on-sage); opacity:.95; }
-.itin-time{ font-family:var(--serif); font-size:22px; color:var(--on-sage); line-height:1; }
-.itin-label{ font-family:var(--sans); font-size:13px; letter-spacing:.06em; color:var(--on-sage); opacity:.85; margin-top:3px; }
+.itin-time{ display:block; font-family:var(--serif); font-size:22px; color:var(--on-sage); line-height:1; }
+.itin-label{ display:block; font-family:var(--sans); font-size:13px; letter-spacing:.06em; color:var(--on-sage); opacity:.85; margin-top:3px; }
 
 /* ===================== Nuestra historia ===================== */
 .story{ gap:18px; overflow-y:auto; }
@@ -403,7 +403,7 @@ button{font-family:inherit; cursor:pointer;}
 .gifts{ gap:22px; }
 .gift-text{ font-family:var(--serif); font-size:clamp(16px,4.6vw,20px); line-height:1.6;
   color:var(--on-sage); max-width:34ch; margin:14px 0 0; }
-.btn-light{ background:var(--on-sage); color:var(--green-ink); text-decoration:none; }
+.btn-light{ display:inline-block; background:var(--on-sage); color:var(--green-ink); text-decoration:none; }
 
 /* ===================== RSVP slide palette normalize ===================== */
 .confirm .names{ color:var(--green-ink); }
@@ -419,3 +419,15 @@ button{font-family:inherit; cursor:pointer;}
 .gallery-panel .btn{ margin-top:18px; background:var(--on-sage); color:var(--green-ink); }
 .vpanel{ background:#000; }
 .vtitle{ font-family:var(--serif); color:var(--green-ink); }
+
+/* ===================== Intro / progress / hint (re-skin) ===================== */
+.intro{ background:var(--cream); }
+.intro-names{ font-family:var(--script); color:var(--gold); }
+.intro-sub{ font-family:var(--sans); color:var(--muted); letter-spacing:.14em; }
+.env-flap, .env-body{ background:var(--cream-2); border-color:var(--gold-soft); }
+.env-seal{ background:var(--sage); color:var(--on-sage); }
+.intro-open{ background:var(--sage); color:var(--on-sage); border:none; }
+.progress .seg i{ background:var(--gold-soft); }
+.progress .seg.done i, .progress .seg.active i{ background:var(--gold); }
+.hint{ color:var(--muted); }
+.hint-chev{ color:var(--gold); }
