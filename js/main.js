@@ -40,6 +40,27 @@
   var mapBtn = $("#btn-map");
   if (mapBtn && cfg.mapsButtonText) mapBtn.textContent = cfg.mapsButtonText;
 
+  /* ---------- Itinerario ---------- */
+  function itinIcon(name) {
+    var s = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">';
+    var paths = {
+      rings:  '<circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M9 4l1.5 3M15 4l-1.5 3M12 2l-1.5 2.5h3L12 2z"/>',
+      camera: '<rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-2.5h5L16 7"/>',
+      dinner: '<path d="M5 3v8a2 2 0 002 2v8M7 3v6M19 3c-1.5 1-2.5 3-2.5 6 0 2 1 2.5 2.5 2.5V21"/>',
+      party:  '<path d="M3 21l6-14 8 8-14 6zM9 7l8 8M14 3l1 2 2 1-2 1-1 2-1-2-2-1 2-1 1-2z"/>'
+    };
+    return s + (paths[name] || paths.rings) + '</svg>';
+  }
+  var itinList = $("#itinerary-list");
+  if (itinList && cfg.itinerary) {
+    itinList.innerHTML = cfg.itinerary.map(function (it) {
+      return '<li class="itin-item">' +
+        '<span class="itin-ico" aria-hidden="true">' + itinIcon(it.icon) + '</span>' +
+        '<span><span class="itin-time">' + it.time + '</span>' +
+        '<span class="itin-label">' + it.label + '</span></span></li>';
+    }).join("");
+  }
+
   /* ---------- Construye slides dinámicos (galería / video) ---------- */
   var wrapper = $("#wrapper");
   var galleryList = (cfg.gallery || []).map(function (g) {

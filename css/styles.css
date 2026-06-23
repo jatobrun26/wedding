@@ -380,3 +380,13 @@ button{font-family:inherit; cursor:pointer;}
   text-transform:uppercase; color:var(--muted); margin-top:6px; }
 .countdown.big .cd-sep{ font-family:var(--serif); color:var(--gold-soft);
   font-size:clamp(30px,10vw,46px); line-height:1; padding-top:2px; }
+
+/* ===================== Itinerario ===================== */
+.itinerary{ gap:18px; }
+.itin-list{ list-style:none; margin:18px 0 0; padding:0; width:100%; max-width:340px;
+  display:flex; flex-direction:column; gap:22px; }
+.itin-item{ display:flex; align-items:center; gap:16px; text-align:left; }
+.itin-ico{ flex:0 0 auto; width:42px; height:42px; display:grid; place-items:center; }
+.itin-ico svg{ width:34px; height:34px; color:var(--on-sage); opacity:.95; }
+.itin-time{ font-family:var(--serif); font-size:22px; color:var(--on-sage); line-height:1; }
+.itin-label{ font-family:var(--sans); font-size:13px; letter-spacing:.06em; color:var(--on-sage); opacity:.85; margin-top:3px; }
