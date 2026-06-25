@@ -191,9 +191,9 @@
       segs[k].classList.toggle("done", k < swiper.activeIndex);
       segs[k].classList.toggle("active", k === swiper.activeIndex);
     }
-    // hide the cover hint once we move on
+    // El hint "Desliza para continuar" se oculta solo en la última slide (ya no hay a dónde ir).
     var hint = $("#hint");
-    if (hint) hint.style.opacity = swiper.activeIndex === 0 ? "" : "0";
+    if (hint) hint.style.opacity = (swiper.activeIndex >= swiper.slides.length - 1) ? "0" : "";
   }
   swiper.on("slideChange", paintProgress);
   paintProgress();
