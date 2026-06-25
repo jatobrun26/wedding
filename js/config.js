@@ -70,5 +70,5 @@ window.WEDDING_CONFIG = {
   // Regalos
   giftText: "Desde el inicio de nuestra historia hemos compartido sueños, metas y proyectos que nos ilusionan profundamente. Si desean acompañarnos también en esta nueva etapa, hemos preparado una lista con algunos detalles que nos ayudarán a construir nuestro hogar y seguir creando recuerdos juntos.",
   // URL del Web App de Apps Script (ver apps-script-gifts.gs). Vacío ⇒ se oculta el botón.
-  giftEndpoint: ""
+  giftEndpoint: "https://script.google.com/macros/s/AKfycbz7_wH6HU-jty-XBQWsz9wkBTbOGepMlqgg-bg7fWCKYT7_yjNqXWrEtBNpF1V5MePj/exec"
 };
