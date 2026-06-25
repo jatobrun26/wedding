@@ -14,10 +14,27 @@
     deadline.textContent = "Por favor confirma antes del " + cfg.rsvpDeadlineText + ".";
   }
 
+  // Registro silencioso en la hoja (mismo Web App que los regalos), vía JSONP.
+  var seq = 0;
+  function logToSheet(data) {
+    if (!cfg.giftEndpoint) return;
+    var name = "__rsvpcb_" + (++seq);
+    var s = document.createElement("script");
+    window[name] = function () { cleanup(); };
+    s.onerror = function () { cleanup(); };
+    function cleanup() { try { delete window[name]; } catch (e) {} if (s.parentNode) s.parentNode.removeChild(s); }
+    data.action = "rsvp"; data.callback = name;
+    var q = [];
+    for (var k in data) { if (data.hasOwnProperty(k)) q.push(encodeURIComponent(k) + "=" + encodeURIComponent(data[k])); }
+    s.src = cfg.giftEndpoint + (cfg.giftEndpoint.indexOf("?") < 0 ? "?" : "&") + q.join("&");
+    document.body.appendChild(s);
+  }
+
   function open() {
     body.hidden = false; success.hidden = true;
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
+    var c = document.getElementById("rsvp-close"); if (c) c.focus();
   }
   function close() {
     modal.classList.remove("open");
@@ -38,6 +55,9 @@
     var invitados = form.invitados.value;
     var mensaje = form.mensaje.value.trim();
     if (!nombre) { form.nombre.focus(); return; }
+
+    // Registra la confirmación en la hoja (si hay endpoint), además de WhatsApp.
+    logToSheet({ nombre: nombre, asiste: asiste, invitados: invitados, mensaje: mensaje });
 
     // Arma el mensaje de WhatsApp ya redactado
     var lines = [

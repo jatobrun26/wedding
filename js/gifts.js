@@ -132,6 +132,7 @@
     body.hidden = false; success.hidden = true;
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
+    var c = document.getElementById("gift-close"); if (c) c.focus();
     loadList();
   }
   function close() {

@@ -85,6 +85,52 @@
     giftBtn.addEventListener("click", function () { window.GIFTS.open(); });
   }
 
+  /* ---------- Compartir invitación ---------- */
+  var toastEl = $("#toast"), toastTimer;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg; toastEl.hidden = false;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("show"); toastEl.hidden = true; }, 2200);
+  }
+  var shareBtn = $("#share-btn");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", function () {
+      var url = location.origin + location.pathname;
+      var data = { title: "Jamil & Gaby · Nos casamos",
+        text: "Te invitamos a nuestra boda — 01 de agosto del 2026 💍", url: url };
+      if (navigator.share) {
+        navigator.share(data).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () { toast("¡Enlace copiado!"); },
+          function () { window.prompt("Copia el enlace:", url); });
+      } else {
+        window.prompt("Copia el enlace:", url);
+      }
+    });
+  }
+
+  /* ---------- Accesibilidad: atrapar el foco dentro del modal abierto ---------- */
+  function openOverlayEl() {
+    if (window.RSVP && window.RSVP.isOpen()) return $("#rsvp-modal");
+    if (window.GIFTS && window.GIFTS.isOpen()) return $("#gift-modal");
+    if ($("#video-modal").classList.contains("open")) return $("#video-modal");
+    return null;
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Tab") return;
+    var ov = openOverlayEl();
+    if (!ov) return;
+    var all = ov.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])');
+    var f = Array.prototype.filter.call(all, function (el) { return el.offsetParent !== null; });
+    if (!f.length) { e.preventDefault(); return; }
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    else if (Array.prototype.indexOf.call(f, document.activeElement) === -1) { e.preventDefault(); first.focus(); }
+  });
+
   /* ---------- Construye slides dinámicos (galería / video) ---------- */
   var wrapper = $("#wrapper");
   var galleryList = (cfg.gallery || []).map(function (g) {

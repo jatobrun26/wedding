@@ -25,10 +25,21 @@
 // Nombre de la pestaña con la lista. Déjalo en "" para usar la primera hoja.
 var SHEET_NAME = "";
 
+// Correo donde recibir avisos de reservas y confirmaciones (RSVP). Déjalo en "" para no enviar.
+var NOTIFY_EMAIL = "jbrunes@udtonline.com";
+
+// Pestaña donde se registran las confirmaciones (RSVP). Se crea sola si no existe.
+var RSVP_SHEET = "RSVP";
+
 // Índices de columna (1 = A). Ajusta solo si cambias el orden de columnas.
 var COL_RESERVADO = 1; // A
 var COL_REGALO    = 2; // B
 var COL_FAMILIA   = 3; // C
+
+function notify_(subject, body) {
+  if (!NOTIFY_EMAIL) return;
+  try { MailApp.sendEmail(NOTIFY_EMAIL, subject, body); } catch (e) {}
+}
 
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -103,7 +114,32 @@ function reserve_(params) {
     lock.releaseLock();
   }
 
+  if (reserved.length) {
+    notify_("🎁 Nueva reserva de regalo — " + familia,
+      familia + " reservó:\n• " + reserved.join("\n• ") +
+      (taken.length ? "\n\nYa estaban tomados:\n• " + taken.join("\n• ") : ""));
+  }
   return { ok: true, reserved: reserved, taken: taken };
+}
+
+function rsvp_(params) {
+  var nombre    = String(params.nombre || "").trim();
+  var asiste    = String(params.asiste || "").trim();
+  var invitados = String(params.invitados || "").trim();
+  var mensaje   = String(params.mensaje || "").trim();
+  if (!nombre) return { ok: false, error: "Falta el nombre." };
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(RSVP_SHEET) || ss.insertSheet(RSVP_SHEET);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(["Fecha", "Nombre", "¿Asiste?", "Invitados", "Mensaje"]);
+  }
+  sheet.appendRow([new Date(), nombre, asiste, invitados, mensaje]);
+
+  notify_("💌 Nueva confirmación — " + nombre,
+    "Nombre: " + nombre + "\nAsistencia: " + asiste +
+    "\nInvitados: " + invitados + (mensaje ? "\nMensaje: " + mensaje : ""));
+  return { ok: true };
 }
 
 function output_(obj, callback) {
@@ -123,6 +159,7 @@ function doGet(e) {
   var cb = p.callback || "";
   try {
     if (p.action === "reserve") return output_(reserve_(p), cb);
+    if (p.action === "rsvp") return output_(rsvp_(p), cb);
     return output_(listItems_(), cb); // 'list' por defecto
   } catch (err) {
     return output_({ ok: false, error: String(err) }, cb);
