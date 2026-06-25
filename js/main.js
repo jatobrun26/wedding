@@ -65,11 +65,11 @@
   var storyImg = $("#story-img");
   var storyPhoto = $(".story-photo");
   if (cfg.storyVideo && storyPhoto) {
-    // Reemplaza la foto por un video en bucle (sin sonido, autoplay).
+    // Reemplaza la foto por el video (toca para reproducir con sonido; la foto es el póster).
+    storyPhoto.classList.add("has-video");
     storyPhoto.innerHTML =
-      '<video src="' + cfg.storyVideo + '" autoplay muted loop playsinline ' +
-      'preload="metadata"' + (cfg.storyImage ? ' poster="' + cfg.storyImage + '"' : '') +
-      '></video>';
+      '<video src="' + cfg.storyVideo + '" controls playsinline preload="metadata"' +
+      (cfg.storyImage ? ' poster="' + cfg.storyImage + '"' : '') + '></video>';
   } else if (storyImg && cfg.storyImage) {
     storyImg.src = cfg.storyImage;
   }
@@ -153,7 +153,7 @@
   paintProgress();
 
   /* ---------- Tap to navigate (story style) ---------- */
-  var IGNORE = ".actionbar, .btn, .grid, .vpanel, .music-btn, a, input, textarea, label";
+  var IGNORE = ".actionbar, .btn, .grid, .vpanel, .music-btn, a, input, textarea, label, video, .story-photo";
   $("#deck").addEventListener("click", function (e) {
     if (anyOverlayOpen()) return;
     if (e.target.closest(IGNORE)) return;

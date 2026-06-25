@@ -395,6 +395,8 @@ button{font-family:inherit; cursor:pointer;}
 .slide--cream h2.story-title{ color:var(--gold); }
 .story-photo{ width:min(72%,300px); aspect-ratio:3/2; overflow:hidden; border-radius:6px; box-shadow:var(--shadow); }
 .story-photo img, .story-photo video{ width:100%; height:100%; object-fit:cover; display:block; }
+.story-photo.has-video{ aspect-ratio:9/16; width:min(60%,240px); background:#000; }
+.story-photo.has-video video{ object-fit:contain; }
 .story-text{ font-family:var(--serif); font-size:clamp(16px,4.6vw,20px); line-height:1.6;
   color:var(--ink); max-width:34ch; margin:0; }
 
