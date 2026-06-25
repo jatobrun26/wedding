@@ -26,7 +26,7 @@
 var SHEET_NAME = "";
 
 // Correo donde recibir avisos de reservas y confirmaciones (RSVP). Déjalo en "" para no enviar.
-var NOTIFY_EMAIL = "jbrunes@udtonline.com";
+var NOTIFY_EMAIL = "jamil.andres123@gmail.com";
 
 // Pestaña donde se registran las confirmaciones (RSVP). Se crea sola si no existe.
 var RSVP_SHEET = "RSVP";
