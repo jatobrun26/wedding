@@ -63,7 +63,16 @@
 
   /* ---------- Nuestra historia ---------- */
   var storyImg = $("#story-img");
-  if (storyImg && cfg.storyImage) storyImg.src = cfg.storyImage;
+  var storyPhoto = $(".story-photo");
+  if (cfg.storyVideo && storyPhoto) {
+    // Reemplaza la foto por un video en bucle (sin sonido, autoplay).
+    storyPhoto.innerHTML =
+      '<video src="' + cfg.storyVideo + '" autoplay muted loop playsinline ' +
+      'preload="metadata"' + (cfg.storyImage ? ' poster="' + cfg.storyImage + '"' : '') +
+      '></video>';
+  } else if (storyImg && cfg.storyImage) {
+    storyImg.src = cfg.storyImage;
+  }
   var storyText = $("#story-text");
   if (storyText && cfg.story) storyText.textContent = cfg.story;
 

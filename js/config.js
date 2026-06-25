@@ -47,7 +47,8 @@ window.WEDDING_CONFIG = {
   // Fotos de las secciones (reemplaza por las reales cuando las tengas)
   heroImage:    "assets/paint/villa.jpeg",  // villa pintada (acuarela hi-res) — fondo de portada
   messageImage: "assets/paint/couple.jpg",  // pareja en acuarela suave
-  storyImage:   "assets/gallery/g10.jpg",  // TODO: foto "La pedida"
+  storyImage:   "assets/gallery/g10.jpg",  // foto "La pedida" (también sirve de póster del video)
+  storyVideo:   "",                          // si pones un .mp4 aquí, el slide muestra video en bucle en vez de la foto
 
   // Detalles
   addressLines: ["La Puntilla, Samborondón", "Av. Principal, calle cuarta sur"], // TODO: dirección real
