@@ -7,7 +7,7 @@ window.WEDDING_CONFIG = {
   initials: { left: "J", right: "G" },
 
   // Fecha y hora de la ceremonia (zona horaria de Ecuador, UTC-5)
-  dateISO: "2026-08-01T16:30:00-05:00",   // se usa para la cuenta regresiva
+  dateISO: "2026-08-01T16:00:00-05:00",   // 4:00pm (inicio del evento) — cuenta regresiva
   ceremonyTitle: "Boda Civil · Jamil & Gabriela",
   ceremonyDetails: "¡Nos encantaría que formes parte de este momento tan especial!",
 
