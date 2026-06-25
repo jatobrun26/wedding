@@ -37,15 +37,6 @@ button{font-family:inherit; cursor:pointer;}
   display:flex; align-items:center; justify-content:center;
   background:var(--cream);
 }
-.card{
-  position:relative;
-  width:min(100vw, calc(100svh * 1688 / 3000));
-  aspect-ratio:1688 / 3000;
-  height:auto;
-  overflow:hidden;
-  background:var(--cream);
-}
-.page{ width:100%; height:100%; object-fit:cover; display:block; }
 
 /* Cover hint */
 .hint{
@@ -65,18 +56,6 @@ button{font-family:inherit; cursor:pointer;}
   50%{ transform:translateX(6px); opacity:1; }
 }
 
-/* ===================== Action bar (on image slides) ===================== */
-.actionbar{
-  position:absolute; left:0; right:0; bottom:0;
-  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
-  gap:16px; padding:13% 6% 8%;
-  background:linear-gradient(to top, var(--cream) 60%, rgba(244,241,233,0) 100%);
-}
-/* Slide 3: taller solid bar to hide the heart printed on the page image */
-.actionbar.cover{
-  min-height:35%;
-  background:linear-gradient(to top, var(--cream) 82%, rgba(244,241,233,0) 100%);
-}
 .countdown{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; width:100%; }
 .cd-cell{
   text-align:center;
@@ -133,16 +112,10 @@ button{font-family:inherit; cursor:pointer;}
 .grid img{ width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px; cursor:pointer;
   box-shadow:0 6px 16px rgba(40,34,20,.12); transition:transform .2s ease; }
 .grid img:active{ transform:scale(.96); }
-.leaf-sep{ color:var(--gold-soft); font-size:22px; margin:6px 0; }
 
 /* ===================== Confirm / RSVP slide (HTML) ===================== */
 .confirm{ position:relative; justify-content:center; padding:7vh 9vw; }
 .confirm > *{ margin:0; }
-.c-num{
-  position:absolute; top:5%; left:12%;
-  font-family:var(--serif); font-weight:600; color:var(--ink); font-size:20px;
-}
-.c-num::after{ content:""; display:block; width:26px; height:2px; background:var(--gold); margin-top:4px; }
 .c-ico{ color:var(--gold); display:block; margin-bottom:6%; }
 .c-ico svg{ width:38px; height:38px; }
 .confirm .script{ font-family:var(--script); font-weight:400; line-height:1; }
@@ -409,7 +382,7 @@ button{font-family:inherit; cursor:pointer;}
 /* ===================== RSVP slide palette normalize ===================== */
 .confirm .names{ color:var(--green-ink); }
 .confirm .con-carino, .confirm .confirm-sub, .confirm .c-ico, .confirm .hrt{ color:var(--gold); }
-.confirm .thanks, .confirm .deadline, .confirm .c-num{ color:var(--muted); }
+.confirm .thanks, .confirm .deadline{ color:var(--muted); }
 .confirm .confirm-title{ color:var(--green-ink); }
 .btn-primary{ background:var(--sage); color:var(--on-sage); border:none; }
 
