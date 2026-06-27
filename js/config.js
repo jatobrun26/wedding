@@ -46,7 +46,7 @@ window.WEDDING_CONFIG = {
 
   // Fotos de las secciones (reemplaza por las reales cuando las tengas)
   heroImage:    "assets/paint/villa.jpeg",  // villa pintada (acuarela hi-res) — fondo de portada
-  messageImage: "assets/paint/couple.jpg",  // pareja en acuarela suave
+  messageImage: "assets/paint/foto.jpg",  // foto de la pareja (optimizada desde canva-ref/foto.jpg)
   storyImage:   "assets/clips/story-poster.jpg",  // póster (fotograma del reel)
   storyVideo:   "assets/clips/story.mp4",          // reel completo; el slide muestra el video (toca para reproducir)
 
