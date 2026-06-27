@@ -198,6 +198,13 @@
   swiper.on("slideChange", paintProgress);
   paintProgress();
 
+  /* Pausa el video de "Nuestra historia" al salir de su slide (evita que el
+     audio siga sonando de fondo tras pasar a otra slide). */
+  swiper.on("slideChange", function () {
+    var vid = document.querySelector(".story-photo video");
+    if (vid && !vid.paused) vid.pause();
+  });
+
   /* ---------- Tap to navigate (story style) ---------- */
   var IGNORE = ".actionbar, .btn, .grid, .vpanel, .music-btn, a, input, textarea, label, video, .story-photo";
   $("#deck").addEventListener("click", function (e) {
