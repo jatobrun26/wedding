@@ -370,10 +370,11 @@ button{font-family:inherit; cursor:pointer;}
 .story-photo img, .story-photo video{ width:100%; height:100%; object-fit:cover; display:block; }
 .story-photo.has-video{ aspect-ratio:9/16; width:min(60%,240px); background:#000; }
 .story-photo.has-video video{ object-fit:contain; }
-/* WebKit (iOS Safari) promueve <video> a su propia capa GPU que IGNORA el
-   transform 3D del flip de Swiper, así que el video "se filtra" sobre las
-   demás slides. Lo ocultamos en cualquier slide que no sea la activa. */
-.swiper-slide:not(.swiper-slide-active) .story-photo video{ visibility:hidden; }
+/* WebKit (iOS Safari) promueve <video> y sus controles nativos (el botón de
+   play) a capas GPU propias que IGNORAN el transform 3D del flip de Swiper, así
+   que se "filtran" sobre las demás slides. 'visibility:hidden' no basta para la
+   capa de controles; hay que sacar el elemento del render con 'display:none'. */
+.swiper-slide:not(.swiper-slide-active) .story-photo video{ display:none; }
 .story-text{ font-family:var(--serif); font-size:clamp(16px,4.6vw,20px); line-height:1.6;
   color:var(--ink); max-width:34ch; margin:0; }
 
