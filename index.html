@@ -232,8 +232,8 @@
   <div class="tapzone tap-left" id="tap-left" aria-hidden="true"></div>
   <div class="tapzone tap-right" id="tap-right" aria-hidden="true"></div>
 
-  <!-- ===================== INTRO (sobre / wax seal) ===================== -->
-  <div class="intro" id="intro">
+  <!-- ===================== INTRO (sobre / wax seal) — deshabilitado: se abre directo ===================== -->
+  <div class="intro gone" id="intro">
     <div class="intro-inner">
       <div class="envelope" id="envelope">
         <div class="env-flap"></div>
@@ -276,9 +276,9 @@
         </form>
       </div>
       <div class="modal-success" id="rsvp-success" hidden>
-        <div class="success-heart">♥</div>
-        <h3 class="serif-caps">¡Gracias!</h3>
-        <p class="muted">Se abrió WhatsApp con tu confirmación.<br/>Solo presiona enviar. ¡Nos vemos el 01 de agosto! 💛</p>
+        <div class="success-heart" id="rsvp-success-icon">♥</div>
+        <h3 class="serif-caps" id="rsvp-success-title">¡Gracias!</h3>
+        <p class="muted" id="rsvp-success-text">Se abrió WhatsApp con tu confirmación.<br/>Solo presiona enviar. ¡Nos vemos el 01 de agosto! 💛</p>
         <button class="btn" id="rsvp-done" type="button">Cerrar</button>
       </div>
     </div>

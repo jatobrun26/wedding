@@ -225,6 +225,7 @@ button{font-family:inherit; cursor:pointer;}
 
 .modal-success{ text-align:center; padding:10px 0; }
 .success-heart{ font-size:46px; color:var(--gold); animation:pop .5s ease; }
+.success-heart.is-regret{ animation:fade .6s ease; }
 @keyframes pop{ 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
 
 /* ===================== Lightbox ===================== */

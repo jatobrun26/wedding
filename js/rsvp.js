@@ -56,18 +56,30 @@
     var mensaje = form.mensaje.value.trim();
     if (!nombre) { form.nombre.focus(); return; }
 
+    var attending = asiste === "Sí, asistiré";
+
     // Registra la confirmación en la hoja (si hay endpoint), además de WhatsApp.
     logToSheet({ nombre: nombre, asiste: asiste, invitados: invitados, mensaje: mensaje });
 
-    // Arma el mensaje de WhatsApp ya redactado
-    var lines = [
-      "¡Hola Jamil & Gabriela! 💍",
-      "",
-      "Confirmo mi asistencia a su boda:",
-      "• Nombre: " + nombre,
-      "• Asistencia: " + asiste,
-      "• N° de invitados: " + invitados,
-    ];
+    // Arma el mensaje de WhatsApp ya redactado (distinto según asista o no)
+    var lines;
+    if (attending) {
+      lines = [
+        "¡Hola Jamil & Gabriela! 💍",
+        "",
+        "Confirmo mi asistencia a su boda:",
+        "• Nombre: " + nombre,
+        "• Asistencia: " + asiste,
+        "• N° de invitados: " + invitados,
+      ];
+    } else {
+      lines = [
+        "¡Hola Jamil & Gabriela! 💛",
+        "",
+        "Lamentablemente no podré acompañarlos en su boda.",
+        "• Nombre: " + nombre,
+      ];
+    }
     if (mensaje) lines.push("• Mensaje: " + mensaje);
     var text = encodeURIComponent(lines.join("\n"));
 
@@ -75,6 +87,20 @@
     var url = num
       ? "https://wa.me/" + num + "?text=" + text
       : "https://wa.me/?text=" + text;
+
+    // Ajusta la pantalla de confirmación al tipo de respuesta
+    var icon = document.getElementById("rsvp-success-icon");
+    var title = document.getElementById("rsvp-success-title");
+    var sText = document.getElementById("rsvp-success-text");
+    if (attending) {
+      if (icon) { icon.textContent = "♥"; icon.classList.remove("is-regret"); }
+      if (title) title.textContent = "¡Gracias!";
+      if (sText) sText.innerHTML = "Se abrió WhatsApp con tu confirmación.<br/>Solo presiona enviar. ¡Nos vemos el 01 de agosto! 💛";
+    } else {
+      if (icon) { icon.textContent = "✉"; icon.classList.add("is-regret"); }
+      if (title) title.textContent = "¡Gracias por avisarnos!";
+      if (sText) sText.innerHTML = "Sentimos que no puedas acompañarnos.<br/>Los vamos a extrañar 💛";
+    }
 
     // Abre WhatsApp y muestra la confirmación visual
     window.open(url, "_blank", "noopener");
