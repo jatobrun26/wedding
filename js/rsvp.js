@@ -1,5 +1,7 @@
 /* RSVP form → Google Apps Script Web App (or graceful fallback).
-   La lista de nombres + cupo máximo se lee en vivo de la pestaña "invitados". */
+   La lista de nombres + cupo máximo se lee en vivo de la pestaña "invitados".
+   El nombre se elige con un buscador (combobox); al confirmar, el nombre se
+   marca en la hoja y desaparece de la lista. */
 (function () {
   var cfg = window.WEDDING_CONFIG || {};
 
@@ -7,12 +9,12 @@
   var form = document.getElementById("rsvp-form");
   var body = document.getElementById("rsvp-body");
   var success = document.getElementById("rsvp-success");
-  var submitBtn = document.getElementById("rsvp-submit");
   var deadline = document.getElementById("rsvp-deadline");
   if (!modal || !form) return;
 
-  var nameSelect = document.getElementById("rsvp-nombre");
-  var nameFallback = document.getElementById("rsvp-nombre-fallback");
+  var combo = document.getElementById("rsvp-combo");
+  var nameInput = document.getElementById("rsvp-nombre");
+  var nameList = document.getElementById("rsvp-name-list");
   var invField = document.getElementById("rsvp-invitados-field");
   var invInput = document.getElementById("rsvp-invitados");
 
@@ -22,40 +24,36 @@
 
   var seq = 0;
 
-  /* ---------- Carga de invitados (nombre + cupos) vía JSONP ---------- */
-  var cuposByName = {};   // { "Nombre": cupos }
-  var namesReady = false; // lista cargada con éxito
-  var loading = false;    // petición en curso
+  /* ---------- Estado de la lista de invitados ---------- */
+  var items = [];          // [{ name, cupos }] aún disponibles
+  var cuposByName = {};     // { "Nombre": cupos }
+  var namesReady = false;   // lista cargada con éxito
+  var loading = false;      // petición en curso
+  var activeIdx = -1;       // opción resaltada con teclado
+
+  function norm(s) { return String(s || "").trim().toLowerCase(); }
+
+  function indexItems() {
+    cuposByName = {};
+    items.forEach(function (it) { cuposByName[it.name] = it.cupos; });
+  }
 
   function fillNames(list) {
-    cuposByName = {};
-    nameSelect.innerHTML = "";
-    var ph = document.createElement("option");
-    ph.value = ""; ph.textContent = "Selecciona tu nombre";
-    nameSelect.appendChild(ph);
-    list.forEach(function (it) {
-      var name = String(it.name || "").trim();
-      if (!name) return;
+    items = list.map(function (it) {
       var cupos = parseInt(it.cupos, 10);
-      if (isNaN(cupos) || cupos < 1) cupos = 1;
-      cuposByName[name] = cupos;
-      var o = document.createElement("option");
-      o.value = name; o.textContent = name;
-      o.setAttribute("data-cupos", cupos);
-      nameSelect.appendChild(o);
-    });
-    namesReady = true;
-    loading = false;
-    nameSelect.hidden = false; nameSelect.disabled = false;
-    nameFallback.hidden = true;
+      return { name: String(it.name || "").trim(), cupos: (isNaN(cupos) || cupos < 1) ? 1 : cupos };
+    }).filter(function (it) { return it.name; });
+    indexItems();
+    namesReady = true; loading = false;
+    nameInput.placeholder = "Escribe o elige tu nombre";
     refreshGuestField();
   }
 
-  // Respaldo: si no hay endpoint o la carga falla, usamos un input de texto libre.
+  // Respaldo: si no hay endpoint o la carga falla, el campo es texto libre.
   function useFallbackName() {
-    loading = false;
-    nameSelect.hidden = true; nameSelect.disabled = true;
-    nameFallback.hidden = false;
+    loading = false; namesReady = false;
+    nameInput.placeholder = "Tu nombre y apellido";
+    closeList();
     refreshGuestField();
   }
 
@@ -82,26 +80,99 @@
     setTimeout(function () { if (!done) { cleanup(); useFallbackName(); } }, 8000);
   }
 
-  /* ---------- Estado del formulario ---------- */
-  function getNombre() {
-    if (!nameFallback.hidden) return nameFallback.value.trim();
-    return (nameSelect.value || "").trim();
+  /* ---------- Combobox (buscador de nombres) ---------- */
+  function matches(q) {
+    q = norm(q);
+    if (!q) return items.slice(0, 50);
+    return items.filter(function (it) { return norm(it.name).indexOf(q) >= 0; }).slice(0, 50);
   }
 
+  function openList() { nameList.hidden = false; nameInput.setAttribute("aria-expanded", "true"); }
+  function closeList() { nameList.hidden = true; nameInput.setAttribute("aria-expanded", "false"); activeIdx = -1; }
+
+  function renderList() {
+    if (!namesReady) { closeList(); return; }     // modo texto libre: sin lista
+    var list = matches(nameInput.value);
+    nameList.innerHTML = "";
+    if (!list.length) {
+      var li = document.createElement("li");
+      li.className = "empty"; li.textContent = "Sin resultados";
+      nameList.appendChild(li);
+      openList(); activeIdx = -1; return;
+    }
+    list.forEach(function (it, i) {
+      var li = document.createElement("li");
+      li.setAttribute("role", "option");
+      li.textContent = it.name;
+      li.dataset.name = it.name;
+      li.addEventListener("mousedown", function (e) { e.preventDefault(); choose(it.name); });
+      nameList.appendChild(li);
+    });
+    activeIdx = -1;
+    openList();
+  }
+
+  function highlight(idx) {
+    var opts = nameList.querySelectorAll('li[role="option"]');
+    if (!opts.length) return;
+    if (idx < 0) idx = opts.length - 1;
+    if (idx >= opts.length) idx = 0;
+    activeIdx = idx;
+    for (var i = 0; i < opts.length; i++) {
+      var on = i === activeIdx;
+      opts[i].classList.toggle("active", on);
+      opts[i].setAttribute("aria-selected", on ? "true" : "false");
+      if (on) opts[i].scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  function choose(name) {
+    nameInput.value = name;
+    closeList();
+    refreshGuestField();
+  }
+
+  // Nombre conocido (disponible) que coincide exactamente, sin distinguir mayúsculas.
+  function matchedName() {
+    var v = norm(nameInput.value);
+    for (var i = 0; i < items.length; i++) if (norm(items[i].name) === v) return items[i].name;
+    return null;
+  }
+
+  nameInput.addEventListener("focus", function () { if (namesReady) renderList(); });
+  nameInput.addEventListener("input", function () { renderList(); refreshGuestField(); });
+  nameInput.addEventListener("keydown", function (e) {
+    if (!namesReady) return;
+    if (e.key === "ArrowDown") { if (nameList.hidden) renderList(); else highlight(activeIdx + 1); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { if (!nameList.hidden) { highlight(activeIdx - 1); e.preventDefault(); } }
+    else if (e.key === "Enter") {
+      var opts = nameList.querySelectorAll('li[role="option"]');
+      if (!nameList.hidden && activeIdx >= 0 && opts[activeIdx]) { choose(opts[activeIdx].dataset.name); e.preventDefault(); }
+    } else if (e.key === "Escape") { closeList(); }
+  });
+  // Cierra la lista al hacer clic fuera del combobox.
+  document.addEventListener("click", function (e) { if (combo && !combo.contains(e.target)) closeList(); });
+
+  /* ---------- Campo "Número de invitados" ---------- */
   function attendingNow() {
     var r = form.querySelector('input[name="asiste"]:checked');
     return !r || r.value === "Sí, asistiré";
   }
 
-  // Máximo de invitados para el nombre elegido (null = aún sin nombre).
+  // Máximo para el nombre elegido (null = aún sin nombre válido; 10 en texto libre).
   function currentMax() {
-    if (!nameFallback.hidden) return 10;            // texto libre: tope prudente
-    var n = nameSelect.value;
-    if (n && cuposByName.hasOwnProperty(n)) return cuposByName[n];
-    return null;
+    if (!namesReady) return 10;
+    var n = matchedName();
+    return n ? cuposByName[n] : null;
   }
 
-  // Muestra/oculta y acota el campo "Número de invitados" según asistencia y cupos.
+  function clampGuests(max) {
+    var v = parseInt(invInput.value, 10);
+    if (isNaN(v) || v < 1) v = 1;
+    if (v > max) v = max;
+    invInput.value = String(v);
+  }
+
   function refreshGuestField() {
     if (!attendingNow()) {
       invField.hidden = true;
@@ -111,21 +182,19 @@
     invField.hidden = false;
     invInput.min = "1";
     var max = currentMax();
-    if (max == null) {
-      invInput.max = "10";
-      invInput.disabled = false;
-      return;
-    }
+    if (max == null) { invInput.max = "10"; invInput.disabled = false; return; }
     invInput.max = String(max);
     invInput.disabled = (max <= 1);
-    var v = parseInt(invInput.value, 10);
-    if (isNaN(v) || v < 1) v = 1;
-    if (v > max) v = max;
-    invInput.value = String(v);
+    clampGuests(max);
   }
 
-  nameSelect.addEventListener("change", refreshGuestField);
-  nameFallback.addEventListener("input", refreshGuestField);
+  // Tope duro: aunque escriban un número directo, nunca supera el cupo.
+  invInput.addEventListener("input", function () {
+    if (invInput.hidden || !attendingNow()) return;
+    var max = currentMax();
+    if (max != null && invInput.value !== "") clampGuests(max);
+  });
+
   Array.prototype.forEach.call(form.querySelectorAll('input[name="asiste"]'), function (r) {
     r.addEventListener("change", refreshGuestField);
   });
@@ -143,6 +212,13 @@
     for (var k in data) { if (data.hasOwnProperty(k)) q.push(encodeURIComponent(k) + "=" + encodeURIComponent(data[k])); }
     s.src = cfg.giftEndpoint + (cfg.giftEndpoint.indexOf("?") < 0 ? "?" : "&") + q.join("&");
     document.body.appendChild(s);
+  }
+
+  // Quita un nombre de la lista local (tras confirmar) para que desaparezca al instante.
+  function removeNameLocally(name) {
+    var k = norm(name);
+    items = items.filter(function (it) { return norm(it.name) !== k; });
+    indexItems();
   }
 
   /* ---------- Modal ---------- */
@@ -168,19 +244,27 @@
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var nombre = getNombre();
+    var nombre = nameInput.value.trim();
     var asiste = form.asiste.value;
     var mensaje = form.mensaje.value.trim();
-    if (!nombre) {
-      (nameFallback.hidden ? nameSelect : nameFallback).focus();
+
+    if (!nombre) { nameInput.focus(); return; }
+    // Con lista cargada, el nombre debe ser uno de la lista.
+    if (namesReady && !matchedName()) {
+      nameInput.focus();
+      if (combo) combo.classList.add("err");
+      renderList();
       return;
     }
+    if (combo) combo.classList.remove("err");
 
     var attending = asiste === "Sí, asistiré";
     var invitados = attending ? (invInput.value || "1") : "0";
 
     // Registra la confirmación en la hoja (si hay endpoint), además de WhatsApp.
     logToSheet({ nombre: nombre, asiste: asiste, invitados: invitados, mensaje: mensaje });
+    // Desaparece de la lista local de inmediato (el server lo mantiene fuera al recargar).
+    if (namesReady) removeNameLocally(nombre);
 
     // Arma el mensaje de WhatsApp ya redactado (distinto según asista o no)
     var lines;
@@ -228,5 +312,6 @@
     body.hidden = true;
     success.hidden = false;
     form.reset();
+    closeList();
   });
 })();

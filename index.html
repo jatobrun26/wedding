@@ -258,10 +258,12 @@
         <p class="muted" id="rsvp-deadline"></p>
         <form id="rsvp-form" novalidate>
           <label>Nombre y apellido
-            <select id="rsvp-nombre" name="nombre" required>
-              <option value="">Cargando…</option>
-            </select>
-            <input id="rsvp-nombre-fallback" type="text" placeholder="Tu nombre y apellido" hidden />
+            <div class="combo" id="rsvp-combo">
+              <input id="rsvp-nombre" name="nombre" type="text" autocomplete="off"
+                role="combobox" aria-autocomplete="list" aria-expanded="false"
+                aria-controls="rsvp-name-list" placeholder="Cargando lista…" />
+              <ul id="rsvp-name-list" class="combo-list" role="listbox" hidden></ul>
+            </div>
           </label>
           <label>¿Asistirás?
             <div class="seg" role="radiogroup">

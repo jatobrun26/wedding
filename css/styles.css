@@ -211,14 +211,23 @@ button{font-family:inherit; cursor:pointer;}
 #rsvp-form{ display:flex; flex-direction:column; gap:14px; }
 #rsvp-form label{ font-size:13px; color:var(--ink); letter-spacing:.04em;
   display:flex; flex-direction:column; gap:6px; font-weight:500; }
-#rsvp-form input, #rsvp-form textarea, #rsvp-form select{
-  font-family:var(--sans); font-size:16px; padding:11px 12px;
+#rsvp-form input, #rsvp-form textarea{
+  font-family:var(--sans); font-size:16px; padding:11px 12px; width:100%; box-sizing:border-box;
   border:1px solid rgba(177,146,79,.45); border-radius:10px; background:#fff; color:var(--ink);
 }
-#rsvp-form select{ appearance:none; -webkit-appearance:none; cursor:pointer;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b1924f' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
-  background-repeat:no-repeat; background-position:right 12px center; background-size:16px; padding-right:38px; }
-#rsvp-form input:focus, #rsvp-form textarea:focus, #rsvp-form select:focus{ outline:none; border-color:var(--gold); }
+#rsvp-form input:focus, #rsvp-form textarea:focus{ outline:none; border-color:var(--gold); }
+
+/* Combobox buscador de nombres */
+.combo{ position:relative; }
+.combo.err input{ border-color:#c0563f; }
+.combo-list{ position:absolute; left:0; right:0; top:calc(100% + 4px); z-index:20;
+  max-height:210px; overflow-y:auto; margin:0; padding:4px; list-style:none;
+  background:#fff; border:1px solid rgba(177,146,79,.45); border-radius:10px;
+  box-shadow:0 10px 28px rgba(33,31,27,.16); }
+.combo-list li{ padding:9px 10px; border-radius:7px; cursor:pointer; font-size:15px; color:var(--ink); }
+.combo-list li.active, .combo-list li:hover{ background:var(--gold); color:#fff; }
+.combo-list li.empty{ color:var(--muted); cursor:default; }
+.combo-list li.empty:hover{ background:transparent; color:var(--muted); }
 .seg{ display:flex; gap:8px; }
 .seg-opt{ flex:1; position:relative; }
 .seg-opt input{ position:absolute; opacity:0; }
