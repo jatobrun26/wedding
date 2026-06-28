@@ -142,7 +142,7 @@ function rsvp_(params) {
   // Registra la respuesta en la pestaña "invitados" (Confirmado TRUE/FALSE, fecha y
   // n° de asistentes) y oculta el nombre de la lista del formulario.
   var attending = !/^\s*no/i.test(asiste); // "No podré asistir" → false; "Sí, asistiré" → true
-  markInvitadoConfirmado_(nombre, attending, invitados);
+  markInvitadoConfirmado_(nombre, attending, invitados, mensaje);
 
   notify_("💌 Nueva confirmación — " + nombre,
     "Nombre: " + nombre + "\nAsistencia: " + asiste +
@@ -171,13 +171,14 @@ function invitadosCols_(sheet) {
   var lastCol = Math.max(1, sheet.getLastColumn());
   var header = sheet.getRange(1, 1, 1, lastCol).getValues()[0]
     .map(function (h) { return String(h).trim().toLowerCase(); });
-  var cols = { name: -1, cupos: -1, confirmado: -1, fecha: -1, asistentes: -1 };
+  var cols = { name: -1, cupos: -1, confirmado: -1, fecha: -1, asistentes: -1, mensaje: -1 };
   for (var c = 0; c < header.length; c++) {
     if (cols.asistentes < 0 && header[c].indexOf("asisten") >= 0) cols.asistentes = c + 1;
     else if (cols.name < 0 && (header[c].indexOf("nombre") >= 0 || header[c].indexOf("invitad") >= 0)) cols.name = c + 1;
     if (cols.cupos < 0 && header[c].indexOf("cupo") >= 0) cols.cupos = c + 1;
     if (cols.confirmado < 0 && header[c].indexOf("confirm") >= 0) cols.confirmado = c + 1;
     if (cols.fecha < 0 && (header[c].indexOf("fecha") >= 0 || header[c].indexOf("date") >= 0)) cols.fecha = c + 1;
+    if (cols.mensaje < 0 && header[c].indexOf("mensaje") >= 0) cols.mensaje = c + 1;
   }
   if (cols.name < 0) cols.name = 1;
   if (cols.cupos < 0) cols.cupos = 2;
@@ -205,6 +206,7 @@ function ensureInvitadosCols_(sheet, cols) {
   if (cols.confirmado < 0) { last++; sheet.getRange(1, last).setValue("Confirmado"); cols.confirmado = last; }
   if (cols.fecha < 0) { last++; sheet.getRange(1, last).setValue("Fecha confirmación"); cols.fecha = last; }
   if (cols.asistentes < 0) { last++; sheet.getRange(1, last).setValue("Asistentes"); cols.asistentes = last; }
+  if (cols.mensaje < 0) { last++; sheet.getRange(1, last).setValue("Mensaje"); cols.mensaje = last; }
   return cols;
 }
 
@@ -212,7 +214,8 @@ function ensureInvitadosCols_(sheet, cols) {
 //   Confirmado   = TRUE si asiste, FALSE si no podrá
 //   Fecha        = fecha/hora de la respuesta (marca "ya respondió")
 //   Asistentes   = n° de invitados que confirmó (0 si no asiste)
-function markInvitadoConfirmado_(nombre, attending, invitadosCount) {
+//   Mensaje      = mensaje opcional para los novios
+function markInvitadoConfirmado_(nombre, attending, invitadosCount, mensaje) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = findSheetLoose_(ss, INVITADOS_SHEET);
   if (!sheet) return false;
@@ -230,6 +233,7 @@ function markInvitadoConfirmado_(nombre, attending, invitadosCount) {
         sheet.getRange(i + 1, cols.confirmado).setValue(attending ? true : false);
         sheet.getRange(i + 1, cols.fecha).setValue(new Date());
         sheet.getRange(i + 1, cols.asistentes).setValue(n);
+        sheet.getRange(i + 1, cols.mensaje).setValue(String(mensaje || ""));
         SpreadsheetApp.flush();
         return true;
       }
