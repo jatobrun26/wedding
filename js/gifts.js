@@ -117,7 +117,10 @@
   }
   function showSuccess(data) {
     var parts = [];
-    if (data.reserved && data.reserved.length) parts.push("Reservaste: " + data.reserved.join(", ") + ".");
+    if (data.reserved && data.reserved.length) {
+      parts.push("Reservaste: " + data.reserved.join(", ") + ".");
+      parts.push("Si desean hacernos llegar su regalo antes o después del día, con mucho gusto los recibimos en casa. Lo importante es que ese día disfruten sin preocupaciones.");
+    }
     if (data.taken && data.taken.length) parts.push("Estos ya los había tomado otra familia: " + data.taken.join(", ") + ".");
     if (!parts.length) parts.push("No se reservó ningún regalo.");
     successMsg.textContent = parts.join(" ");
