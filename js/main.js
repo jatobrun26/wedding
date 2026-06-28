@@ -355,15 +355,16 @@
     });
   }
 
-  /* ---------- Intro deshabilitado: se abre la invitación directamente ----------
-     (también soporta deep link / preview: ?s=<index> &rsvp=1 &gift=1) */
+  /* ---------- Deep link / preview: ?s=<index> (&rsvp=1) ---------- */
   var qs = new URLSearchParams(location.search);
-  intro.classList.add("gone");
-  swiper.slideTo(qs.has("s") ? (parseInt(qs.get("s"), 10) || 0) : 0, 0);
-  startPetals();
-  paintProgress();
-  if (qs.get("rsvp") === "1" && window.RSVP) window.RSVP.open();
-  if (qs.get("gift") === "1" && window.GIFTS) window.GIFTS.open();
+  if (qs.has("s")) {
+    intro.classList.add("gone");
+    swiper.slideTo(parseInt(qs.get("s"), 10) || 0, 0);
+    startPetals();
+    paintProgress();
+    if (qs.get("rsvp") === "1" && window.RSVP) window.RSVP.open();
+    if (qs.get("gift") === "1" && window.GIFTS) window.GIFTS.open();
+  }
 
   /* ---------- Escape closes overlays ---------- */
   document.addEventListener("keydown", function (e) {

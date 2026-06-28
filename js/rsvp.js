@@ -1,4 +1,5 @@
-/* RSVP form → Google Apps Script Web App (or graceful fallback). */
+/* RSVP form → Google Apps Script Web App (or graceful fallback).
+   La lista de nombres + cupo máximo se lee en vivo de la pestaña "invitados". */
 (function () {
   var cfg = window.WEDDING_CONFIG || {};
 
@@ -10,12 +11,126 @@
   var deadline = document.getElementById("rsvp-deadline");
   if (!modal || !form) return;
 
+  var nameSelect = document.getElementById("rsvp-nombre");
+  var nameFallback = document.getElementById("rsvp-nombre-fallback");
+  var invField = document.getElementById("rsvp-invitados-field");
+  var invInput = document.getElementById("rsvp-invitados");
+
   if (deadline && cfg.rsvpDeadlineText) {
     deadline.textContent = "Por favor confirma antes del " + cfg.rsvpDeadlineText + ".";
   }
 
-  // Registro silencioso en la hoja (mismo Web App que los regalos), vía JSONP.
   var seq = 0;
+
+  /* ---------- Carga de invitados (nombre + cupos) vía JSONP ---------- */
+  var cuposByName = {};   // { "Nombre": cupos }
+  var namesReady = false; // lista cargada con éxito
+  var loading = false;    // petición en curso
+
+  function fillNames(list) {
+    cuposByName = {};
+    nameSelect.innerHTML = "";
+    var ph = document.createElement("option");
+    ph.value = ""; ph.textContent = "Selecciona tu nombre";
+    nameSelect.appendChild(ph);
+    list.forEach(function (it) {
+      var name = String(it.name || "").trim();
+      if (!name) return;
+      var cupos = parseInt(it.cupos, 10);
+      if (isNaN(cupos) || cupos < 1) cupos = 1;
+      cuposByName[name] = cupos;
+      var o = document.createElement("option");
+      o.value = name; o.textContent = name;
+      o.setAttribute("data-cupos", cupos);
+      nameSelect.appendChild(o);
+    });
+    namesReady = true;
+    loading = false;
+    nameSelect.hidden = false; nameSelect.disabled = false;
+    nameFallback.hidden = true;
+    refreshGuestField();
+  }
+
+  // Respaldo: si no hay endpoint o la carga falla, usamos un input de texto libre.
+  function useFallbackName() {
+    loading = false;
+    nameSelect.hidden = true; nameSelect.disabled = true;
+    nameFallback.hidden = false;
+    refreshGuestField();
+  }
+
+  function loadInvitados() {
+    if (namesReady || loading) return;
+    if (!cfg.giftEndpoint) { useFallbackName(); return; }
+    loading = true;
+    var cbName = "__invcb_" + (++seq);
+    var s = document.createElement("script");
+    var done = false;
+    function cleanup() {
+      try { delete window[cbName]; } catch (e) {}
+      if (s.parentNode) s.parentNode.removeChild(s);
+    }
+    window[cbName] = function (resp) {
+      done = true; cleanup();
+      if (resp && resp.ok && resp.invitados && resp.invitados.length) fillNames(resp.invitados);
+      else useFallbackName();
+    };
+    s.onerror = function () { done = true; cleanup(); useFallbackName(); };
+    s.src = cfg.giftEndpoint + (cfg.giftEndpoint.indexOf("?") < 0 ? "?" : "&") +
+      "action=invitados&callback=" + cbName;
+    document.body.appendChild(s);
+    setTimeout(function () { if (!done) { cleanup(); useFallbackName(); } }, 8000);
+  }
+
+  /* ---------- Estado del formulario ---------- */
+  function getNombre() {
+    if (!nameFallback.hidden) return nameFallback.value.trim();
+    return (nameSelect.value || "").trim();
+  }
+
+  function attendingNow() {
+    var r = form.querySelector('input[name="asiste"]:checked');
+    return !r || r.value === "Sí, asistiré";
+  }
+
+  // Máximo de invitados para el nombre elegido (null = aún sin nombre).
+  function currentMax() {
+    if (!nameFallback.hidden) return 10;            // texto libre: tope prudente
+    var n = nameSelect.value;
+    if (n && cuposByName.hasOwnProperty(n)) return cuposByName[n];
+    return null;
+  }
+
+  // Muestra/oculta y acota el campo "Número de invitados" según asistencia y cupos.
+  function refreshGuestField() {
+    if (!attendingNow()) {
+      invField.hidden = true;
+      invInput.value = "0";
+      return;
+    }
+    invField.hidden = false;
+    invInput.min = "1";
+    var max = currentMax();
+    if (max == null) {
+      invInput.max = "10";
+      invInput.disabled = false;
+      return;
+    }
+    invInput.max = String(max);
+    invInput.disabled = (max <= 1);
+    var v = parseInt(invInput.value, 10);
+    if (isNaN(v) || v < 1) v = 1;
+    if (v > max) v = max;
+    invInput.value = String(v);
+  }
+
+  nameSelect.addEventListener("change", refreshGuestField);
+  nameFallback.addEventListener("input", refreshGuestField);
+  Array.prototype.forEach.call(form.querySelectorAll('input[name="asiste"]'), function (r) {
+    r.addEventListener("change", refreshGuestField);
+  });
+
+  /* ---------- Registro silencioso en la hoja (acción rsvp) vía JSONP ---------- */
   function logToSheet(data) {
     if (!cfg.giftEndpoint) return;
     var name = "__rsvpcb_" + (++seq);
@@ -30,10 +145,13 @@
     document.body.appendChild(s);
   }
 
+  /* ---------- Modal ---------- */
   function open() {
     body.hidden = false; success.hidden = true;
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
+    loadInvitados();
+    refreshGuestField();
     var c = document.getElementById("rsvp-close"); if (c) c.focus();
   }
   function close() {
@@ -50,13 +168,16 @@
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var nombre = form.nombre.value.trim();
+    var nombre = getNombre();
     var asiste = form.asiste.value;
-    var invitados = form.invitados.value;
     var mensaje = form.mensaje.value.trim();
-    if (!nombre) { form.nombre.focus(); return; }
+    if (!nombre) {
+      (nameFallback.hidden ? nameSelect : nameFallback).focus();
+      return;
+    }
 
     var attending = asiste === "Sí, asistiré";
+    var invitados = attending ? (invInput.value || "1") : "0";
 
     // Registra la confirmación en la hoja (si hay endpoint), además de WhatsApp.
     logToSheet({ nombre: nombre, asiste: asiste, invitados: invitados, mensaje: mensaje });

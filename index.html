@@ -232,8 +232,8 @@
   <div class="tapzone tap-left" id="tap-left" aria-hidden="true"></div>
   <div class="tapzone tap-right" id="tap-right" aria-hidden="true"></div>
 
-  <!-- ===================== INTRO (sobre / wax seal) — deshabilitado: se abre directo ===================== -->
-  <div class="intro gone" id="intro">
+  <!-- ===================== INTRO (sobre / wax seal) ===================== -->
+  <div class="intro" id="intro">
     <div class="intro-inner">
       <div class="envelope" id="envelope">
         <div class="env-flap"></div>
@@ -258,7 +258,10 @@
         <p class="muted" id="rsvp-deadline"></p>
         <form id="rsvp-form" novalidate>
           <label>Nombre y apellido
-            <input type="text" name="nombre" required placeholder="Tu nombre" />
+            <select id="rsvp-nombre" name="nombre" required>
+              <option value="">Cargando…</option>
+            </select>
+            <input id="rsvp-nombre-fallback" type="text" placeholder="Tu nombre y apellido" hidden />
           </label>
           <label>¿Asistirás?
             <div class="seg" role="radiogroup">
@@ -266,8 +269,8 @@
               <label class="seg-opt"><input type="radio" name="asiste" value="No podré asistir" /><span>No podré</span></label>
             </div>
           </label>
-          <label>Número de invitados (incluyéndote)
-            <input type="number" name="invitados" min="1" max="10" value="1" />
+          <label id="rsvp-invitados-field">Número de invitados (incluyéndote)
+            <input type="number" name="invitados" id="rsvp-invitados" min="1" max="10" value="1" />
           </label>
           <label>Mensaje para los novios (opcional)
             <textarea name="mensaje" rows="2" placeholder="Un buen deseo…"></textarea>

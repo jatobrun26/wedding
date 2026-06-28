@@ -211,11 +211,14 @@ button{font-family:inherit; cursor:pointer;}
 #rsvp-form{ display:flex; flex-direction:column; gap:14px; }
 #rsvp-form label{ font-size:13px; color:var(--ink); letter-spacing:.04em;
   display:flex; flex-direction:column; gap:6px; font-weight:500; }
-#rsvp-form input, #rsvp-form textarea{
+#rsvp-form input, #rsvp-form textarea, #rsvp-form select{
   font-family:var(--sans); font-size:16px; padding:11px 12px;
   border:1px solid rgba(177,146,79,.45); border-radius:10px; background:#fff; color:var(--ink);
 }
-#rsvp-form input:focus, #rsvp-form textarea:focus{ outline:none; border-color:var(--gold); }
+#rsvp-form select{ appearance:none; -webkit-appearance:none; cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b1924f' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat; background-position:right 12px center; background-size:16px; padding-right:38px; }
+#rsvp-form input:focus, #rsvp-form textarea:focus, #rsvp-form select:focus{ outline:none; border-color:var(--gold); }
 .seg{ display:flex; gap:8px; }
 .seg-opt{ flex:1; position:relative; }
 .seg-opt input{ position:absolute; opacity:0; }

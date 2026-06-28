@@ -31,6 +31,9 @@ var NOTIFY_EMAIL = "jamil.andres123@gmail.com";
 // Pestaña donde se registran las confirmaciones (RSVP). Se crea sola si no existe.
 var RSVP_SHEET = "RSVP";
 
+// Pestaña con la lista de invitados (nombre + cupo máximo) que llena el dropdown del RSVP.
+var INVITADOS_SHEET = "invitados";
+
 // Índices de columna (1 = A). Ajusta solo si cambias el orden de columnas.
 var COL_RESERVADO = 1; // A
 var COL_REGALO    = 2; // B
@@ -142,6 +145,52 @@ function rsvp_(params) {
   return { ok: true };
 }
 
+// Lee la pestaña "invitados" y devuelve [{ name, cupos }, …].
+// Detecta columnas por encabezado: "nombre"/"invitad" → nombre, "cupo" → cupos.
+// Respaldo si no hay encabezados reconocibles: A = nombre, B = cupos.
+// Busca una pestaña por nombre sin distinguir mayúsculas ni espacios sobrantes.
+function findSheetLoose_(ss, wanted) {
+  var w = String(wanted).trim().toLowerCase();
+  var sheets = ss.getSheets();
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].getName().trim().toLowerCase() === w) return sheets[i];
+  }
+  return null;
+}
+
+function listInvitados_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = findSheetLoose_(ss, INVITADOS_SHEET);
+  if (!sheet) {
+    var names = ss.getSheets().map(function (s) { return s.getName(); });
+    return { ok: false, error: "No existe la pestaña '" + INVITADOS_SHEET +
+      "'. Pestañas en este archivo: " + names.join(", ") };
+  }
+
+  var values = sheet.getDataRange().getValues();
+  if (!values.length) return { ok: true, invitados: [] };
+
+  var header = values[0].map(function (h) { return String(h).trim().toLowerCase(); });
+  var nameCol = -1, cuposCol = -1;
+  for (var c = 0; c < header.length; c++) {
+    if (nameCol < 0 && (header[c].indexOf("nombre") >= 0 || header[c].indexOf("invitad") >= 0)) nameCol = c;
+    if (cuposCol < 0 && header[c].indexOf("cupo") >= 0) cuposCol = c;
+  }
+  var hasHeader = nameCol >= 0;
+  if (nameCol < 0) nameCol = 0;      // respaldo: columna A
+  if (cuposCol < 0) cuposCol = 1;    // respaldo: columna B
+
+  var invitados = [];
+  for (var i = hasHeader ? 1 : 0; i < values.length; i++) {
+    var name = String(values[i][nameCol] || "").trim();
+    if (!name) continue;
+    var cupos = parseInt(values[i][cuposCol], 10);
+    if (isNaN(cupos) || cupos < 1) cupos = 1;
+    invitados.push({ name: name, cupos: cupos });
+  }
+  return { ok: true, invitados: invitados };
+}
+
 function output_(obj, callback) {
   var json = JSON.stringify(obj);
   if (callback) {
@@ -160,6 +209,7 @@ function doGet(e) {
   try {
     if (p.action === "reserve") return output_(reserve_(p), cb);
     if (p.action === "rsvp") return output_(rsvp_(p), cb);
+    if (p.action === "invitados") return output_(listInvitados_(), cb);
     return output_(listItems_(), cb); // 'list' por defecto
   } catch (err) {
     return output_({ ok: false, error: String(err) }, cb);
